@@ -20,7 +20,7 @@ export const RecipeProvider = ({ children }) => {
   const [error,             setError]             = useState(null);
   const [dietaryPreference, setDietaryPreference] = useState("");
 
-  const API_BASE = "https://ai-recipe-8j1h.onrender.com";
+  const API_BASE = "/api/recipes";
 
   const analyzeImage = useCallback(async (imageFile) => {
     setLoading(true);
