@@ -20,7 +20,9 @@ export const RecipeProvider = ({ children }) => {
   const [error,             setError]             = useState(null);
   const [dietaryPreference, setDietaryPreference] = useState("");
 
-  const API_BASE = "/api/recipes";
+  // Dynamically uses your Netlify environment variable or falls back to localhost for VS Code testing
+  const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+  const API_BASE = `${BACKEND_URL}/api/recipes`;
 
   const analyzeImage = useCallback(async (imageFile) => {
     setLoading(true);
@@ -42,7 +44,7 @@ export const RecipeProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_BASE]);
 
   const generateRecipe = useCallback(
     async (ingredientList, diet) => {
@@ -64,7 +66,7 @@ export const RecipeProvider = ({ children }) => {
         setLoading(false);
       }
     },
-    [ingredients, dietaryPreference]
+    [ingredients, dietaryPreference, API_BASE]
   );
 
   const getRecipeSuggestions = useCallback(
@@ -87,7 +89,7 @@ export const RecipeProvider = ({ children }) => {
         setLoading(false);
       }
     },
-    [ingredients, dietaryPreference]
+    [ingredients, dietaryPreference, API_BASE]
   );
 
   const saveRecipe = useCallback(async (recipeData) => {
@@ -100,7 +102,7 @@ export const RecipeProvider = ({ children }) => {
       setError(message);
       throw new Error(message);
     }
-  }, []);
+  }, [API_BASE]);
 
   const fetchSavedRecipes = useCallback(async (filters = {}) => {
     setLoading(true);
@@ -116,7 +118,7 @@ export const RecipeProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_BASE]);
 
   const deleteSavedRecipe = useCallback(async (id) => {
     try {
@@ -127,7 +129,7 @@ export const RecipeProvider = ({ children }) => {
       setError(message);
       throw new Error(message);
     }
-  }, []);
+  }, [API_BASE]);
 
   const clearRecipe = useCallback(() => {
     setRecipe(null);
